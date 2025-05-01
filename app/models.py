@@ -1,11 +1,9 @@
-from flask import Flask
-
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
-class User(db.Model):
+class Employee(db.Model):
+    __tablename__ = 'employee'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -15,14 +13,16 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<Employee {self.name}>'
+
 class Salary(db.Model):
-    
+    __tablename__ = 'salary'
+
     id = db.Column(db.Integer, primary_key=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.Date, nullable=False)
 
-    employee = db.relationship('Employee', backref='user.id')
+    employee = db.relationship('Employee', backref='salaries')
 
     def __repr__(self):
         return f'<Salary {self.amount}>'
